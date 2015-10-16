@@ -1,0 +1,31 @@
+development:
+  sessions:
+    default:
+      database: veye_dev
+      hosts:
+        - 172.16.148.134:27017
+
+test:
+  sessions:
+    default:
+      database: veye_test
+      hosts:
+        - 172.16.148.134:27017
+
+production:
+  sessions:
+    default:
+      database: veye_prod
+      hosts:
+        - <%= ENV['DB_PORT_27017_TCP_ADDR'] ||= 'localhost' %>:<%= ENV['DB_PORT_27017_TCP_PORT'] ||= '27017' %>
+        - <%= ENV['MONGO_RS_2_ADDR'] ||= 'localhost' %>:<%= ENV['MONGO_RS_2_PORT'] ||= '27017' %>
+        - <%= ENV['MONGO_RS_3_ADDR'] ||= 'localhost' %>:<%= ENV['MONGO_RS_3_PORT'] ||= '27017' %>
+      options:
+        read: :secondary
+
+enterprise:
+  sessions:
+    default:
+      database: veye_enterprise
+      hosts:
+        - <%= ENV['DB_PORT_27017_TCP_ADDR'] ||= 'localhost' %>:<%= ENV['DB_PORT_27017_TCP_PORT'] ||= '27017' %>
