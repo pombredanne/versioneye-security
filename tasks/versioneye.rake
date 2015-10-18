@@ -1,5 +1,3 @@
-# require 'ruby_crawl'
-
 require 'rufus-scheduler'
 require 'versioneye-core'
 require './lib/versioneye-security'
