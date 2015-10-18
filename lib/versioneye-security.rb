@@ -4,7 +4,9 @@ require 'mongoid'
 require 'httparty'
 
 require 'settings'
-require './lib/versioneye/security_sensiolabs_crawler'
+require './lib/versioneye/common_security'
+require './lib/versioneye/php_sensiolabs_crawler'
+require './lib/versioneye/node_security_crawler'
 
 
 class VersioneyeSecurity

@@ -29,11 +29,11 @@ namespace :versioneye do
 
   # ***** Crawler Tasks *****
 
-  desc "Start SecuritySensiolabsCrawler"
+  desc "Start PhpSensiolabsCrawler"
   task :crawl_security_sensiolabs do
-    puts "START SecuritySensiolabsCrawler"
+    puts "START PhpSensiolabsCrawler"
     VersioneyeSecurity.new
-    SecuritySensiolabsCrawler.crawl
+    PhpSensiolabsCrawler.crawl
     puts "---"
   end
 

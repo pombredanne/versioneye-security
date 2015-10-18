@@ -1,0 +1,23 @@
+require 'spec_helper'
+
+describe NodeSecurityCrawler do
+
+  describe 'crawl' do
+
+    it "succeeds" do
+      product = ProductFactory.create_for_npm 'serve-static', "1.8.0"
+      product.save.should be_truthy
+      product.versions.push( Version.new( { :version => "1.7.0" } ) )
+      product.versions.push( Version.new( { :version => "1.8.0" } ) )
+      product.save.should be_truthy
+
+      described_class.crawl
+
+      product = Product.fetch_product Product::A_LANGUAGE_NODEJS, 'serve-static'
+      product.version_by_number('1.7.0').sv_ids.should_not be_empty
+      product.version_by_number('1.8.0').sv_ids.should be_empty
+    end
+
+  end
+
+end

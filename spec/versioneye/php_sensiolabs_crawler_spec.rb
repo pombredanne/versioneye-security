@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SecuritySensiolabsCrawler do
+describe PhpSensiolabsCrawler do
 
   describe 'crawle_scurity' do
 
