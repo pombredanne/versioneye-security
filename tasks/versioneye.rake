@@ -11,12 +11,15 @@ namespace :versioneye do
     VersioneyeSecurity.new
     scheduler = Rufus::Scheduler.new
 
-    # Crawl it once a hour. A crawl takes ~ 1 minutes!
+    # Crawl it once a hour.
     value = '35 * * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        CommonCrawlProducer.new "::security_sensiolabs::"
-      end
+    scheduler.cron value do
+      SecurityProducer.new "php_sensiolabs"
+    end
+
+    value = '40 * * * *'
+    scheduler.cron value do
+      SecurityProducer.new "node_security"
     end
 
     scheduler.join
@@ -34,6 +37,14 @@ namespace :versioneye do
     puts "START PhpSensiolabsCrawler"
     VersioneyeSecurity.new
     PhpSensiolabsCrawler.crawl
+    puts "---"
+  end
+
+  desc "Start NodeSecurityCrawler"
+  task :crawl_node_security do
+    puts "START NodeSecurityCrawler"
+    VersioneyeSecurity.new
+    NodeSecurityCrawler.crawl
     puts "---"
   end
 
