@@ -19,6 +19,10 @@ class SecurityWorker < Worker
 
         process_work message
 
+        log_msg = "Job done for #{message}"
+        puts log_msg
+        log.info log_msg
+
         channel.ack(delivery_info.delivery_tag)
       end
     rescue => e
@@ -37,9 +41,6 @@ class SecurityWorker < Worker
     elsif message.eql?('php_sensiolabs')
       PhpSensiolabsCrawler.crawl
     end
-
-    log_msg = "Job done for #{message}"
-    log.info log_msg
   rescue => e
     log.error e.message
     log.error e.backtrace.join("\n")

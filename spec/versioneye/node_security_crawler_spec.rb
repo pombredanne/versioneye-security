@@ -11,7 +11,12 @@ describe NodeSecurityCrawler do
       product.versions.push( Version.new( { :version => "1.8.0" } ) )
       product.save.should be_truthy
 
-      described_class.crawl
+      worker = Thread.new{ SecurityWorker.new.work }
+
+      SecurityProducer.new("node_security")
+      sleep 30
+
+      worker.exit
 
       product = Product.fetch_product Product::A_LANGUAGE_NODEJS, 'serve-static'
       product.version_by_number('1.7.0').sv_ids.should_not be_empty

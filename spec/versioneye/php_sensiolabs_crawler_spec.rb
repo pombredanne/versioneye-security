@@ -11,7 +11,12 @@ describe PhpSensiolabsCrawler do
       product.versions.push( Version.new( { :version => "2.0.0" } ) )
       product.save.should be_truthy
 
-      described_class.crawl
+      worker = Thread.new{ SecurityWorker.new.work }
+
+      SecurityProducer.new("php_sensiolabs")
+      sleep 30
+
+      worker.exit
 
       product = Product.fetch_product "PHP", 'firebase/php-jwt'
       product.version_by_number('1.9.0').sv_ids.should_not be_empty

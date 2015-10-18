@@ -8,8 +8,10 @@ require './lib/versioneye/common_security'
 require './lib/versioneye/php_sensiolabs_crawler'
 require './lib/versioneye/node_security_crawler'
 
+require './lib/versioneye/producers/producer'
 require './lib/versioneye/producers/security_producer'
 
+require './lib/versioneye/workers/worker'
 require './lib/versioneye/workers/security_worker'
 
 
