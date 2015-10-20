@@ -40,6 +40,8 @@ class SecurityWorker < Worker
       NodeSecurityCrawler.crawl
     elsif message.eql?('php_sensiolabs')
       PhpSensiolabsCrawler.crawl
+    elsif message.eql?('ruby_security')
+      RubySecurityCrawler.crawl
     end
   rescue => e
     log.error e.message

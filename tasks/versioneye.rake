@@ -20,6 +20,11 @@ namespace :versioneye do
       SecurityProducer.new "node_security"
     end
 
+    value = '50 * * * *'
+    scheduler.cron value do
+      SecurityProducer.new "ruby_security"
+    end
+
     scheduler.join
     while 1 == 1
       p "keep alive rake task"
@@ -51,6 +56,14 @@ namespace :versioneye do
     puts "START NodeSecurityCrawler"
     VersioneyeSecurity.new
     NodeSecurityCrawler.crawl
+    puts "---"
+  end
+
+  desc "Start RubySecurityCrawler"
+  task :crawl_ruby_security do
+    puts "START RubySecurityCrawler"
+    VersioneyeSecurity.new
+    RubySecurityCrawler.crawl
     puts "---"
   end
 
