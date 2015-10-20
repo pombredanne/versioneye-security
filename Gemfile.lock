@@ -241,7 +241,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
-    will_paginate (3.0.7)
+    will_paginate (3.0.0)
     will_paginate_mongoid (2.0.1)
       mongoid
       will_paginate (~> 3.0)
@@ -265,6 +265,7 @@ DEPENDENCIES
   shoulda
   simplecov (~> 0.10.0)
   versioneye-core!
+  will_paginate (= 3.0.0)
 
 BUNDLED WITH
    1.10.6

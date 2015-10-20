@@ -8,6 +8,8 @@ gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.gi
 
 gem 'rufus-scheduler', '3.1.4'
 
+gem 'will_paginate', '3.0.0'
+
 group :development do
   gem "shoulda"  , ">= 0"
   gem "rdoc"     , "~> 4.2.0"
