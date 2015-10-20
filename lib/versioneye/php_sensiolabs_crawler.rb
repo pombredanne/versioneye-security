@@ -2,7 +2,7 @@ class PhpSensiolabsCrawler < CommonSecurity
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/php_sensiolabs.log')
+    ActiveSupport::Logger.new('log/php_security.log')
   end
 
 
