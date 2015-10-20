@@ -265,7 +265,6 @@ DEPENDENCIES
   shoulda
   simplecov (~> 0.10.0)
   versioneye-core!
-  will_paginate (= 3.0.7)
 
 BUNDLED WITH
    1.10.6
