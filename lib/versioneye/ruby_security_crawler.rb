@@ -69,6 +69,9 @@ class RubySecurityCrawler < CommonSecurity
 
     mark_affected_versions( sv )
     sv.save
+  rescue => e
+    self.logger.error "ERROR in crawl_yml Message: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
   end
 
 
