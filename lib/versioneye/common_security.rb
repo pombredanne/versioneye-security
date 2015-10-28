@@ -1,5 +1,6 @@
 class CommonSecurity
 
+
   def self.mark_versions sv, product, versions
     return nil if sv.nil?
     return nil if product.nil?
@@ -19,5 +20,21 @@ class CommonSecurity
       end
     end
   end
+
+
+  def self.fetch_sv language, prod_key, name_id
+    return nil if prod_key.to_s.empty? || name_id.to_s.empty?
+
+    svs = SecurityVulnerability.by_language( language ).by_prod_key( prod_key )
+    svs.each do |sv|
+      next if sv.nil?
+
+      return sv if sv.name_id.to_s.eql?(name_id)
+    end
+
+    self.logger.info "Create new SecurityVulnerability for #{language}:#{prod_key} - #{name_id}"
+    SecurityVulnerability.new(:language => language, :prod_key => prod_key, :name_id => name_id )
+  end
+
 
 end
