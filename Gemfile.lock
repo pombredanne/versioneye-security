@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 58f452d2075f6ac6a6ea0dee863f58053588b6bd
-  tag: v7.30.3
+  revision: 170645f844ba55625f2d8de4fb58a9781ffd2fab
+  tag: v7.30.5
   specs:
-    versioneye-core (7.30.3)
+    versioneye-core (7.30.5)
       actionmailer (~> 4.2.2)
       aws-sdk (~> 2.1.3)
       bundler (~> 1.10.6)
@@ -65,12 +65,12 @@ GEM
     addressable (2.3.8)
     amq-protocol (2.0.0)
     ansi (1.5.0)
-    aws-sdk (2.1.30)
-      aws-sdk-resources (= 2.1.30)
-    aws-sdk-core (2.1.30)
+    aws-sdk (2.1.32)
+      aws-sdk-resources (= 2.1.32)
+    aws-sdk-core (2.1.32)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.1.30)
-      aws-sdk-core (= 2.1.30)
+    aws-sdk-resources (2.1.32)
+      aws-sdk-core (= 2.1.32)
     bson (3.2.6)
     builder (3.2.2)
     bunny (2.2.0)
@@ -113,7 +113,7 @@ GEM
       oauth2
     globalid (0.3.6)
       activesupport (>= 4.1.0)
-    hashie (3.4.2)
+    hashie (3.4.3)
     hashr (0.0.22)
     highline (1.7.8)
     http-cookie (1.0.2)
@@ -133,7 +133,7 @@ GEM
       rdoc
     jmespath (1.1.3)
     json (1.8.3)
-    jwt (1.5.1)
+    jwt (1.5.2)
     kgio (2.10.0)
     log4r (1.1.10)
     loofah (2.0.3)
@@ -142,7 +142,7 @@ GEM
       mime-types (>= 1.16, < 3)
     mime-types (2.6.2)
     mini_portile (0.6.2)
-    minitest (5.8.1)
+    minitest (5.8.2)
     mongoid (4.0.2)
       activemodel (~> 4.0)
       moped (~> 2.0.0)
