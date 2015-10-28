@@ -10,6 +10,11 @@ namespace :versioneye do
     scheduler = Rufus::Scheduler.new
 
     # Crawl it once a hour.
+    value = '34 * * * *'
+    scheduler.cron value do
+      SecurityProducer.new "php_magento"
+    end
+
     value = '35 * * * *'
     scheduler.cron value do
       SecurityProducer.new "php_sensiolabs"
@@ -64,6 +69,14 @@ namespace :versioneye do
     puts "START RubySecurityCrawler"
     VersioneyeSecurity.new
     RubySecurityCrawler.crawl
+    puts "---"
+  end
+
+  desc "Start JavaSecurityCrawler"
+  task :crawl_java_security do
+    puts "START JavaSecurityCrawler"
+    VersioneyeSecurity.new
+    JavaSecurityCrawler.crawl
     puts "---"
   end
 
