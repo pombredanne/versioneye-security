@@ -20,13 +20,11 @@ class PhpMagentoCrawler < CommonSecurity
     all_yaml_files( db_dir ) do |filepath|
       i += 1
       logger.info "##{i} parse yaml: #{filepath}"
-      p "##{i} parse yaml: #{filepath}"
       parse_yaml filepath
     end
   end
 
 
-  # Traverse directory, search for .podspec files
   def self.all_yaml_files(dir, &block)
     Dir.glob "#{dir}/**/*.yaml" do |filepath|
       block.call filepath
@@ -43,10 +41,8 @@ class PhpMagentoCrawler < CommonSecurity
     reference = yml['reference'].to_s
     prod_key  = reference.gsub("composer://", "").downcase
     cve       = yml['cve']
-    p cve
 
     sv = fetch_sv Product::A_LANGUAGE_PHP, prod_key, cve
-    p sv.name_id
     sv.cve = yml['cve']
     sv.summary = yml['title']
     sv.links['link'] = yml['link']
