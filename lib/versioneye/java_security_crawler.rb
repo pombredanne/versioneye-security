@@ -1,56 +1,43 @@
 class JavaSecurityCrawler < CommonSecurity
 
 
+  A_GIT_DB = "https://github.com/victims/victims-cve-db.git"
+
+
   def self.logger
     ActiveSupport::Logger.new('log/java_security.log')
   end
 
 
   def self.crawl
-    start_time = Time.now
-    directories = self.get_first_level_list
-    p "Found #{directories.count} directories to crawl."
-    directories.each do |dir|
-      self.crawl_directory dir
-    end
-    duration = Time.now - start_time
-    dur = duration / 60
-    self.logger.info(" *** This crawl took #{dur} minutes *** ")
-    return nil
-  end
+    db_dir = '/tmp/victims-cve-db'
+    java_dir = '/tmp/victims-cve-db/database/java/'
 
+    `(cd /tmp && git clone #{A_GIT_DB})`
+    `(cd #{db_dir} && git pull)`
 
-  def self.get_first_level_list
-    url = "https://github.com/victims/victims-cve-db/tree/master/database/java"
-    page = Nokogiri::HTML( open(url) )
-    page.xpath("//tbody/tr/td/span/a[@class='js-directory-link js-navigation-open']")
-  end
-
-
-  def self.crawl_directory dir
-    return nil if dir.to_s.empty?
-
-    href = dir['href']
-    url = "https://github.com#{href}"
-    page = Nokogiri::HTML(open(url))
-    files = page.xpath("//tbody/tr/td/span/a[@class='js-directory-link js-navigation-open']")
-    files.each do |file|
-      crawl_file file
+    i = 0
+    logger.info "start reading yaml files"
+    all_yaml_files( java_dir ) do |filepath|
+      i += 1
+      logger.info "##{i} parse yaml: #{filepath}"
+      parse_yaml filepath
     end
   end
 
 
-  def self.crawl_file node
-    href = node['href']
-    uri = href.gsub("blob/master", "master")
-    abs_url = "https://raw.githubusercontent.com#{uri}"
-    crawl_yml abs_url
+  def self.all_yaml_files(dir, &block)
+    Dir.glob "#{dir}/**/*.yaml" do |filepath|
+      block.call filepath
+    end
+  rescue => e
+    logger.error e.message
+    logger.error e.backtrace.join("\n")
   end
 
 
-  def self.crawl_yml url
-    self.logger.info "crawling #{url}"
-    yml = Psych.load( open( url ) )
+  def self.parse_yaml filepath
+    yml = Psych.load_file( filepath )
     yml['affected'].to_a.each do |affected|
       groupId    = affected['groupId']
       artifactId = affected['artifactId']
