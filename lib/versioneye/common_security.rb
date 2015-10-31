@@ -37,4 +37,11 @@ class CommonSecurity
   end
 
 
+  def self.all_yaml_files(dir, &block)
+    Dir.glob "#{dir}/**/*.{yml,yaml}" do |filepath|
+      block.call filepath
+    end
+  end
+
+
 end

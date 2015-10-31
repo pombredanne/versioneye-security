@@ -26,24 +26,16 @@ class JavaSecurityCrawler < CommonSecurity
   end
 
 
-  def self.all_yaml_files(dir, &block)
-    Dir.glob "#{dir}/**/*.yaml" do |filepath|
-      block.call filepath
-    end
-  rescue => e
-    logger.error e.message
-    logger.error e.backtrace.join("\n")
-  end
-
-
   def self.parse_yaml filepath
     yml = Psych.load_file( filepath )
     yml['affected'].to_a.each do |affected|
       groupId    = affected['groupId']
       artifactId = affected['artifactId']
       prod_key   = "#{groupId}/#{artifactId}".downcase
+      name_id    = yml["cve"]
+      name_id    = filepath.split("/").last.gsub(".yaml", "").gsub(".yml", "") if name_id.to_s.strip.empty?
 
-      sv = fetch_sv Product::A_LANGUAGE_JAVA, prod_key, yml["cve"]
+      sv = fetch_sv Product::A_LANGUAGE_JAVA, prod_key, name_id
       update( sv, yml, affected )
       mark_affected_versions( sv, affected['version'] )
       sv.save

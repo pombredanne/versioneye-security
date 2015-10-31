@@ -34,22 +34,12 @@ class PhpMagentoCrawler < CommonSecurity
   end
 
 
-  def self.all_yaml_files(dir, &block)
-    Dir.glob "#{dir}/**/*.yaml" do |filepath|
-      block.call filepath
-    end
-  rescue => e
-    logger.error e.message
-    logger.error e.backtrace.join("\n")
-  end
-
-
   def self.parse_yaml filepath
     yml = Psych.load_file( filepath )
 
     reference = yml['reference'].to_s
     prod_key  = reference.gsub("composer://", "").downcase
-    name_id   = filepath.split("/").last.gsub(".yaml", "")
+    name_id   = filepath.split("/").last.gsub(".yaml", "").gsub(".yml", "")
 
     sv = fetch_sv Product::A_LANGUAGE_PHP, prod_key, name_id
     sv.cve = yml['cve']
