@@ -9,24 +9,19 @@ namespace :versioneye do
     VersioneyeSecurity.new
     scheduler = Rufus::Scheduler.new
 
-    # Crawl it once a hour.
-    value = '34 * * * *'
-    scheduler.cron value do
+    scheduler.every '5m' do
       SecurityProducer.new "php_magento"
     end
 
-    value = '35 * * * *'
-    scheduler.cron value do
+    scheduler.every '5m' do
       SecurityProducer.new "php_sensiolabs"
     end
 
-    value = '40 * * * *'
-    scheduler.cron value do
+    scheduler.every '5m' do
       SecurityProducer.new "node_security"
     end
 
-    value = '50 * * * *'
-    scheduler.cron value do
+    scheduler.every '5m' do
       SecurityProducer.new "ruby_security"
     end
 
