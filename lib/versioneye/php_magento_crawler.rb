@@ -40,9 +40,9 @@ class PhpMagentoCrawler < CommonSecurity
 
     reference = yml['reference'].to_s
     prod_key  = reference.gsub("composer://", "").downcase
-    cve       = yml['cve']
+    name_id   = filepath.split("/").last.gsub(".yaml", "").gsub(".yml", "")
 
-    sv = fetch_sv Product::A_LANGUAGE_PHP, prod_key, cve
+    sv = fetch_sv Product::A_LANGUAGE_PHP, prod_key, name_id
     sv.cve = yml['cve']
     sv.summary = yml['title']
     sv.links['link'] = yml['link']
