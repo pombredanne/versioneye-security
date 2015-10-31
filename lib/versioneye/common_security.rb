@@ -44,4 +44,13 @@ class CommonSecurity
   end
 
 
+  def self.meassure_exec(&block)
+    start_time = Time.now
+    block.call
+    duration = Time.now - start_time
+    minutes = duration / 60
+    self.logger.info("#{DateTime.now}: This crawl took #{duration} seconds. Or #{minutes} minutes *** ")
+  end
+
+
 end

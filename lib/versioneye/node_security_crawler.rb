@@ -10,11 +10,7 @@ class NodeSecurityCrawler < CommonSecurity
 
 
   def self.crawl
-    start_time = Time.now
-    perform_crawl
-    duration = Time.now - start_time
-    minutes = duration / 60
-    self.logger.info(" *** This crawl took #{duration} seconds. Or #{minutes} minutes *** ")
+    meassure_exec{ perform_crawl }
   end
 
 
