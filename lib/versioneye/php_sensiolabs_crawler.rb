@@ -1,6 +1,9 @@
 class PhpSensiolabsCrawler < CommonSecurity
 
 
+  A_GIT_DB = "https://github.com/FriendsOfPHP/security-advisories.git"
+
+
   def self.logger
     ActiveSupport::Logger.new('log/php_security.log')
   end
@@ -8,131 +11,69 @@ class PhpSensiolabsCrawler < CommonSecurity
 
   def self.crawl
     start_time = Time.now
-    lis = self.get_first_level_list
-    lis.each do |li|
-      self.crawle_package li
-    end
+    perform_crawl
     duration = Time.now - start_time
-    self.logger.info(" *** This crawl took #{duration} *** ")
-    return nil
+    minutes = duration / 60
+    self.logger.info(" *** This crawl took #{duration} seconds. Or #{minutes} minutes *** ")
   end
 
 
-  def self.get_first_level_list
-    url = "https://security.sensiolabs.org/database.html"
-    page = Nokogiri::HTML(open(url))
-    page.xpath("//ul/li")
-  end
+  def self.perform_crawl
+    db_dir = '/tmp/security-advisories'
 
+    `(cd /tmp && git clone #{A_GIT_DB})`
+    `(cd #{db_dir} && git pull)`
 
-  def self.crawle_package li_node
-    return nil if li_node.to_s.empty?
-
-    prod_key = fetch_prod_key li_node
-    link_names = fetch_link_names li_node
-    sv = fetch_sv prod_key, link_names
-
-    if sv.nil?
-      logger.info "sv is nil for #{li_node}"
-      return nil
+    i = 0
+    logger.info "start reading yaml files"
+    all_yaml_files( db_dir ) do |filepath|
+      i += 1
+      logger.info "##{i} parse yaml: #{filepath}"
+      parse_yaml filepath
     end
-
-    li_node.children.each do |child|
-      process_links child, sv
-      process_affected_versions child, sv
-    end
-    sv.save if !sv.affected_versions_string.to_s.empty?
-  rescue => e
-    self.logger.error "ERROR in crawle_package Message: #{e.message}"
-    self.logger.error e.backtrace.join("\n")
   end
 
 
-  def self.process_links child, sv
-    return nil if !child.name.eql?('a') || child['href'].to_s.strip.match(/https\:\/\/packagist\.org/) || child['href'].eql?('/')
+  def self.parse_yaml filepath
+    yml = Psych.load_file( filepath )
 
-    title = child.text.to_s.strip
-    if !sv.links.include?( title )
-      sv.links[title] = child['href'].strip
-    end
-    sv.cve = title if title.to_s.match(/\Acve/i)
-    sv.summary = title if sv.summary.to_s.empty?
-  end
+    reference = yml['reference'].to_s
+    prod_key  = reference.gsub("composer://", "").downcase
+    name_id   = filepath.split("/").last.gsub(".yaml", "").gsub(".yml", "")
 
-
-  def self.process_affected_versions child, sv
-    return nil if !child.text.to_s.strip.match(/Affected versions/i)
-
-    text = child.text.to_s.strip
-    sv.affected_versions_string = text
-
-    matches = text.scan(/\[(.*?)\]/xi)
-    return nil if matches.nil? || matches.size == 0
-
-    product = sv.product
-    if product.nil?
-      self.logger.info "no product for #{sv.prod_key}"
-      return nil
-    end
-
-    mark_affected_versions sv, matches
-  rescue => e
-    logger.error e.message
-    logger.error e.backtrace.join("\n")
-  end
-
-
-  def self.mark_affected_versions sv, matches
-    product = sv.product
-    affected_string = ''
-    matches.each do |version_range|
-      affected_string += version_range.to_s
-      versions = VersionService.from_ranges product.versions, version_range.first
-      mark_versions(sv, product, versions)
-    end
-    sv.affected_versions_string = affected_string
-  end
-
-
-  def self.fetch_sv prod_key, link_names
-    return nil if link_names.to_a.empty?
-
-    svs = SecurityVulnerability.by_language( Product::A_LANGUAGE_PHP ).by_prod_key( prod_key )
-    svs.each do |sv|
-      if sv
-        link_names.each do |link_name|
-          return sv if sv.summary.to_s.eql?(link_name)
+    sv = fetch_sv Product::A_LANGUAGE_PHP, prod_key, name_id
+    sv.cve           = yml['cve']
+    sv.summary       = yml['title']
+    sv.links['link'] = yml['link']
+    sv.affected_versions_string = ''
+    yml['branches'].each do |branch|
+      branch.each do |bran|
+        next if bran['versions'].to_s.empty?
+        bran['versions'].to_a.each do |version_range|
+          sv.affected_versions_string += "[#{version_range}]"
+          sv.publish_date = bran['time']
         end
       end
     end
 
-    self.logger.info "Create new SecurityVulnerability for #{Product::A_LANGUAGE_PHP}:#{prod_key} - #{link_names.first}"
-    SecurityVulnerability.new(:language => Product::A_LANGUAGE_PHP, :prod_key => prod_key, :summary => link_names.first )
-  end
-
-
-  def self.fetch_link_names li_node
-    titles = []
-    li_node.children.each do |child|
-      next if !child.name.eql?('a') || child['href'].to_s.strip.match(/https\:\/\/packagist\.org/) || child['href'].eql?('/')
-
-      titles << child.text.to_s.strip
-    end
-    titles
-  end
-
-
-  def self.fetch_prod_key li_node
-    li_node.children.each do |child|
-      if child.name.eql?('a') && child['href'].to_s.strip.match(/https\:\/\/packagist\.org/)
-        return child.text.strip.downcase
-      end
-    end
-    nil
+    mark_affected_versions( sv )
+    sv.save
   rescue => e
-    self.logger.error "ERROR in fetch_packagist_name Message: #{e.message}"
+    self.logger.error e.message
     self.logger.error e.backtrace.join("\n")
-    nil
   end
+
+
+  def self.mark_affected_versions sv
+    product = sv.product
+    return nil if product.nil?
+
+    matches = sv.affected_versions_string.scan(/\[(.*?)\]/xi)
+    matches.each do |version_range|
+      versions = VersionService.from_ranges product.versions, version_range.first
+      mark_versions(sv, product, versions)
+    end
+  end
+
 
 end

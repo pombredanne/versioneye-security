@@ -14,7 +14,7 @@ describe PhpSensiolabsCrawler do
       worker = Thread.new{ SecurityWorker.new.work }
 
       SecurityProducer.new("php_sensiolabs")
-      sleep 30
+      sleep 5
 
       worker.exit
 
