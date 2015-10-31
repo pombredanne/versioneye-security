@@ -10,6 +10,15 @@ class JavaSecurityCrawler < CommonSecurity
 
 
   def self.crawl
+    start_time = Time.now
+    perform_crawl
+    duration = Time.now - start_time
+    minutes = duration / 60
+    self.logger.info(" *** This crawl took #{duration} seconds. Or #{minutes} minutes *** ")
+  end
+
+
+  def self.perform_crawl
     db_dir = '/tmp/victims-cve-db'
     java_dir = '/tmp/victims-cve-db/database/java/'
 
