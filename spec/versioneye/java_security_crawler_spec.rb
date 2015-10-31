@@ -81,7 +81,7 @@ describe JavaSecurityCrawler do
       worker = Thread.new{ SecurityWorker.new.work }
 
       SecurityProducer.new("java_security")
-      sleep 60
+      sleep 10
 
       worker.exit
 

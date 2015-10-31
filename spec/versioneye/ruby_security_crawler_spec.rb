@@ -13,7 +13,7 @@ describe RubySecurityCrawler do
       worker = Thread.new{ SecurityWorker.new.work }
 
       SecurityProducer.new("ruby_security")
-      sleep 240
+      sleep 10
 
       worker.exit
 
