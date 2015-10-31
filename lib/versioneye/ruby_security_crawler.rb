@@ -1,6 +1,9 @@
 class RubySecurityCrawler < CommonSecurity
 
 
+  A_GIT_DB = "https://github.com/rubysec/ruby-advisory-db.git"
+
+
   def self.logger
     ActiveSupport::Logger.new('log/ruby_security.log')
   end
@@ -8,54 +11,36 @@ class RubySecurityCrawler < CommonSecurity
 
   def self.crawl
     start_time = Time.now
-    directories = self.get_first_level_list
-    p "Found #{directories.count} directories to crawl."
-    directories.each do |dir|
-      self.crawl_directory dir
-    end
+    perform_crawl
     duration = Time.now - start_time
-    dur = duration / 60
-    self.logger.info(" *** This crawl took #{dur} minutes *** ")
-    return nil
+    minutes = duration / 60
+    self.logger.info(" *** This crawl took #{duration} seconds. Or #{minutes} minutes *** ")
   end
 
 
-  def self.get_first_level_list
-    url = "https://github.com/rubysec/ruby-advisory-db/tree/master/gems"
-    page = Nokogiri::HTML(open(url))
-    page.xpath("//tbody/tr/td/span/a[@class='js-directory-link js-navigation-open']")
-  end
+  def self.perform_crawl
+    db_dir = '/tmp/ruby-advisory-db'
 
+    `(cd /tmp && git clone #{A_GIT_DB})`
+    `(cd #{db_dir} && git pull)`
 
-  def self.crawl_directory dir
-    return nil if dir.to_s.empty?
-
-    href = dir['href']
-    url = "https://github.com#{href}"
-    page = Nokogiri::HTML(open(url))
-    files = page.xpath("//tbody/tr/td/span/a[@class='js-directory-link js-navigation-open']")
-    files.each do |file|
-      crawl_file file
+    i = 0
+    logger.info "start reading yaml files"
+    all_yaml_files( "#{db_dir}/gems" ) do |filepath|
+      i += 1
+      logger.info "##{i} parse yaml: #{filepath}"
+      parse_yaml filepath
     end
   end
 
 
-  def self.crawl_file node
-    href = node['href']
-    uri = href.gsub("blob/master", "master")
-    abs_url = "https://raw.githubusercontent.com#{uri}"
-    crawl_yml abs_url
-  end
-
-
-  def self.crawl_yml url
-    self.logger.info "crawling #{url}"
-    yml = Psych.load( open( url ) )
+  def self.parse_yaml filepath
+    yml = Psych.load_file( filepath )
 
     prod_key = yml['gem'].to_s.downcase
-    title    = yml['title']
+    name_id  = filepath.split("/").last.gsub(".yaml", "").gsub(".yml", "")
 
-    sv              = fetch_sv prod_key, title
+    sv              = fetch_sv Product::A_LANGUAGE_RUBY, prod_key, name_id
     sv.description  = yml['description']
     sv.framework    = yml['framework']
     sv.platform     = yml['platform']
@@ -91,18 +76,5 @@ class RubySecurityCrawler < CommonSecurity
     mark_versions(sv, product, affected_versions)
   end
 
-
-  def self.fetch_sv prod_key, title
-    return nil if prod_key.to_s.empty? || title.to_s.empty?
-
-    svs = SecurityVulnerability.by_language( Product::A_LANGUAGE_RUBY ).by_prod_key( prod_key )
-    svs.each do |sv|
-      next if sv.nil?
-      return sv if sv.summary.to_s.eql?(title)
-    end
-
-    self.logger.info "Create new SecurityVulnerability for #{Product::A_LANGUAGE_RUBY}:#{prod_key} - #{title}"
-    SecurityVulnerability.new(:language => Product::A_LANGUAGE_RUBY, :prod_key => prod_key, :summary => title )
-  end
 
 end
