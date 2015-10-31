@@ -14,7 +14,7 @@ describe PhpMagentoCrawler do
       worker = Thread.new{ SecurityWorker.new.work }
 
       SecurityProducer.new("php_magento")
-      sleep 30
+      sleep 20
 
       worker.exit
 
