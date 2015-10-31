@@ -72,10 +72,11 @@ class JavaSecurityCrawler < CommonSecurity
     affected.each do |version_expr|
       if version_expr.match(/,/)
         sps    = version_expr.split(",")
+        condi  = sps[0]
         start  = sps[1]
         start  = "#{start}." if start.match(/-\z/).nil?
         subset = VersionService.versions_start_with( product.versions, start )
-        affected_versions += VersionService.from_ranges( subset, version_expr )
+        affected_versions += VersionService.from_ranges( subset, condi )
         next
       end
       affected_versions += VersionService.from_ranges( product.versions, version_expr )

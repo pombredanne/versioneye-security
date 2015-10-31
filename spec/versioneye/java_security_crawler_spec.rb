@@ -3,6 +3,7 @@ require 'spec_helper'
 describe JavaSecurityCrawler do
 
   describe 'mark_affected_versions' do
+
     it 'will mark the affected versions' do
       product = ProductFactory.create_for_maven 'junit', 'junit', '1.0.0'
       product.add_version('1.0.1')
@@ -33,6 +34,7 @@ describe JavaSecurityCrawler do
       version = product.version_by_number '1.2.0'
       expect( version.sv_ids ).to be_empty
     end
+
     it 'will mark the affected versions' do
       product = ProductFactory.create_for_maven 'junit', 'junit', '1.0.0'
       product.add_version('1.0.1')
@@ -45,8 +47,11 @@ describe JavaSecurityCrawler do
       sv = SecurityVulnerability.new
       sv.language = product.language
       sv.prod_key = product.prod_key
-      JavaSecurityCrawler.mark_affected_versions sv, ['>=1.0.0,1', '2.1.0']
+      JavaSecurityCrawler.mark_affected_versions sv, ['>=1.0.1,1', '2.1.0']
       product.reload
+
+      version = product.version_by_number '1.0.0'
+      expect( version.sv_ids ).to be_empty
 
       version = product.version_by_number '1.0.1'
       expect( version.sv_ids.first ).to eql(sv.ids)
