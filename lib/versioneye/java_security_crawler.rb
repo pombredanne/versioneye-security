@@ -46,7 +46,7 @@ class JavaSecurityCrawler < CommonSecurity
       sv.save
     end
   rescue => e
-    self.logger.error "ERROR in crawl_yml Message: #{e.message}"
+    self.logger.error "ERROR in parse_yaml Message: #{e.message}"
     self.logger.error e.backtrace.join("\n")
   end
 

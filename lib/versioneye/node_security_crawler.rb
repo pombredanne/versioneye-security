@@ -22,7 +22,7 @@ class NodeSecurityCrawler < CommonSecurity
 
     i = 0
     logger.info "start reading yaml files"
-    all_yaml_files( "#{db_dir}/advisories" ) do |filepath|
+    all_md_files( "#{db_dir}/advisories" ) do |filepath|
       i += 1
       logger.info "##{i} parse yaml: #{filepath}"
       process_file filepath
@@ -30,13 +30,10 @@ class NodeSecurityCrawler < CommonSecurity
   end
 
 
-  def self.all_yaml_files(dir, &block)
+  def self.all_md_files(dir, &block)
     Dir.glob "#{dir}/**/*.md" do |filepath|
       block.call filepath
     end
-  rescue => e
-    logger.error e.message
-    logger.error e.backtrace.join("\n")
   end
 
 
@@ -56,6 +53,9 @@ class NodeSecurityCrawler < CommonSecurity
     parse_cve( sv, content_hash )
     mark_affected_versions( sv )
     sv.save
+  rescue => e
+    self.logger.error "ERROR in process_file: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
   end
 
 
@@ -73,7 +73,7 @@ class NodeSecurityCrawler < CommonSecurity
       sv.cve = name
     end
   rescue => e
-    self.logger.error "ERROR in parse_cve Message: #{e.message}"
+    self.logger.error "ERROR in parse_cve: #{e.message}"
     self.logger.error e.backtrace.join("\n")
   end
 
