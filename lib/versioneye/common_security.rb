@@ -48,8 +48,9 @@ class CommonSecurity
     start_time = Time.now
     block.call
     duration = Time.now - start_time
-    minutes = duration / 60
-    self.logger.info("#{DateTime.now}: This crawl took #{duration} seconds. Or #{minutes} minutes *** ")
+    minutes  = duration / 60
+    str_time = DateTime.now.strftime("%Y.%m.%d %H:%M")
+    self.logger.info("#{str_time}: This crawl took #{duration} seconds. Or #{minutes} minutes *** ")
   end
 
 
