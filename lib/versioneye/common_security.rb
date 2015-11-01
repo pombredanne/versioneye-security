@@ -1,12 +1,12 @@
 class CommonSecurity
 
 
-  def self.mark_versions sv, product, versions
+  def self.mark_versions sv, product, affected_versions
     return nil if sv.nil?
     return nil if product.nil?
-    return nil if versions.to_a.empty?
+    return nil if affected_versions.to_a.empty?
 
-    versions.each do |version|
+    affected_versions.each do |version|
       next if version.to_s.match(/\Adev\-/)
       next if sv.affected_versions.include?(version.to_s)
 
