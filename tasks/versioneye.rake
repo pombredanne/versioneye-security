@@ -13,7 +13,7 @@ namespace :versioneye do
       SecurityProducer.new "php_magento"
     end
 
-    scheduler.every '5m' do
+    scheduler.every '15m' do
       SecurityProducer.new "php_sensiolabs"
     end
 
