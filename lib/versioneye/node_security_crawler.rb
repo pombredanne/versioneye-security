@@ -48,7 +48,7 @@ class NodeSecurityCrawler < CommonSecurity
     sv.publish_date             = content_hash[:publish_date]
     sv.affected_versions_string = content_hash[:vulnerable_versions]
     sv.patched_versions_string  = content_hash[:patched_versions]
-    sv.description_md           = content_hash[:description]
+    sv.description              = content_hash[:description]
 
     parse_cve( sv, content_hash )
     mark_affected_versions( sv )
