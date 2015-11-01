@@ -1,5 +1,6 @@
 class PhpSensiolabsCrawler < CommonSecurity
 
+  require "syck"
 
   A_GIT_DB = "https://github.com/FriendsOfPHP/security-advisories.git"
 
@@ -31,7 +32,7 @@ class PhpSensiolabsCrawler < CommonSecurity
 
 
   def self.parse_yaml filepath
-    yml = Psych.load_file( filepath )
+    yml = read_yaml filepath
 
     reference = yml['reference'].to_s
     prod_key  = reference.gsub("composer://", "").downcase
@@ -70,6 +71,26 @@ class PhpSensiolabsCrawler < CommonSecurity
       mark_versions(sv, product, versions)
     end
   end
+
+
+  private
+
+
+    def self.read_yaml filepath
+      Syck.load_file( filepath )
+    rescue => e
+      correct_and_read filepath
+    end
+
+
+    def self.correct_and_read filepath
+      content = File.read( filepath )
+      match   = content.match(/title:(.*:.*)/xi)
+      return nil if match.nil?
+
+      improved = content.gsub(match[1], "\"#{match[1]}\"")
+      Syck.load( improved )
+    end
 
 
 end
