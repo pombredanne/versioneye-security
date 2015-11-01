@@ -29,6 +29,10 @@ namespace :versioneye do
       SecurityProducer.new "java_security"
     end
 
+    scheduler.every '5m' do
+      SecurityProducer.new "python_security"
+    end
+
     scheduler.join
     while 1 == 1
       p "keep alive rake task"

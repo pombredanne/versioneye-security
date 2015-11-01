@@ -46,6 +46,8 @@ class SecurityWorker < Worker
       RubySecurityCrawler.crawl
     elsif message.eql?('java_security')
       JavaSecurityCrawler.crawl
+    elsif message.eql?('python_security')
+      PythonSecurityCrawler.crawl
     end
   rescue => e
     log.error e.message
