@@ -2,6 +2,7 @@ source "http://rubygems.org"
 
 gem 'log4r'              , '~> 1.1.0'
 gem 'bundler'            , '~> 1.10.6'
+gem 'syck', '1.0.5'
 
 gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v7.30.5'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
