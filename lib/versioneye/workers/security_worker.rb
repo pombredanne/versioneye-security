@@ -7,21 +7,14 @@ class SecurityWorker < Worker
     channel = connection.create_channel
     queue   = channel.queue("security_crawl", :durable => true)
 
-    log_msg = " [*] Waiting for messages in #{queue.name}. To exit press CTRL+C"
-    puts log_msg
-    log.info log_msg
+    multi_log " [*] Waiting for messages in #{queue.name}. To exit press CTRL+C"
 
     begin
       queue.subscribe(:ack => true, :block => true) do |delivery_info, properties, message|
-        log_msg = " [x] Received #{message}"
-        puts log_msg
-        log.info log_msg
 
+        multi_log " [x] Received #{message}"
         process_work message
-
-        log_msg = "Job done for #{message}"
-        puts log_msg
-        log.info log_msg
+        multi_log "   - Job done for #{message}"
 
         channel.ack(delivery_info.delivery_tag)
       end
@@ -53,6 +46,15 @@ class SecurityWorker < Worker
     log.error e.message
     log.error e.backtrace.join("\n")
   end
+
+
+  private
+
+
+    def multi_log log_msg
+      puts log_msg
+      log.info log_msg
+    end
 
 
 end
