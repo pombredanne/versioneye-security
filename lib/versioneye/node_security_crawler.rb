@@ -90,7 +90,7 @@ class NodeSecurityCrawler < CommonSecurity
   def self.parse content
     md_content = false
     resp = {}
-    lines = content.split("\n")
+    lines = content.force_encoding(Encoding::UTF_8).split("\n")
     lines.each do |line|
       if line.match(/\A\.\.\./)
         md_content = true
