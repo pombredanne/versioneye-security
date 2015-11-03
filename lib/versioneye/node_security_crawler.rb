@@ -44,6 +44,7 @@ class NodeSecurityCrawler < CommonSecurity
     name_id      = filepath.split("/").last.gsub(".md", "")
 
     sv                          = fetch_sv Product::A_LANGUAGE_NODEJS, prod_key, name_id
+    sv.title                    = content_hash[:title]
     sv.author                   = content_hash[:author]
     sv.publish_date             = content_hash[:publish_date]
     sv.affected_versions_string = content_hash[:vulnerable_versions]

@@ -54,6 +54,7 @@ class JavaSecurityCrawler < CommonSecurity
   def self.update sv, yml, affected
     sv.description = yml['description']
     sv.summary     = yml['title']
+    sv.summary     = sv.name_id if sv.summary.to_s.empty?
     sv.cve         = yml['cve']
     sv.cvss_v2     = yml['cvss_v2']
     sv.affected_versions_string = affected['version'].to_a.join(" && ")
