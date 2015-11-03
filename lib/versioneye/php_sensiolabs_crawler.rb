@@ -41,6 +41,7 @@ class PhpSensiolabsCrawler < CommonSecurity
     sv = fetch_sv Product::A_LANGUAGE_PHP, prod_key, name_id
     sv.cve           = yml['cve']
     sv.summary       = yml['title']
+    sv.summary       = sv.name_id if sv.summary.to_s.empty?
     sv.links['link'] = yml['link']
     sv.affected_versions_string = ''
     yml['branches'].each do |branch|
