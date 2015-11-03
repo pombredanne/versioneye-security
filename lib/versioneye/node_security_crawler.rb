@@ -69,7 +69,7 @@ class NodeSecurityCrawler < CommonSecurity
       link = element[:link]
       next if name.to_s.empty? || link.to_s.empty?
 
-      sv.links[name] = link
+      sv.links[name.gsub(".", "")] = link
       sv.cve = name
     end
   rescue => e

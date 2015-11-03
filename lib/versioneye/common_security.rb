@@ -13,11 +13,7 @@ class CommonSecurity
       sv.affected_versions.push(version.to_s)
 
       product.reload
-      v_db = product.version_by_number version.to_s
-      if !v_db.sv_ids.include?(sv._id.to_s)
-        v_db.sv_ids << sv._id.to_s
-        v_db.save
-      end
+      product.add_svid version.to_s, sv
     end
   end
 
