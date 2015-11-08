@@ -32,29 +32,16 @@ class PhpSensiolabsCrawler < CommonSecurity
 
 
   def self.parse_yaml filepath
-    yml = read_yaml filepath
-
+    yml       = read_yaml filepath
+    name_id   = filepath.split("/").last.gsub(".yaml", "").gsub(".yml", "")
     reference = yml['reference'].to_s
     prod_key  = reference.gsub("composer://", "").downcase
-    name_id   = filepath.split("/").last.gsub(".yaml", "").gsub(".yml", "")
 
     sv = fetch_sv Product::A_LANGUAGE_PHP, prod_key, name_id
-    sv.cve           = yml['cve']
-    sv.summary       = yml['title']
-    sv.summary       = sv.name_id if sv.summary.to_s.empty?
-    sv.links['link'] = yml['link']
-    sv.affected_versions_string = ''
+    update( sv, yml )
     yml['branches'].each do |branch|
-      branch.each do |bran|
-        next if bran['versions'].to_s.empty?
-        bran['versions'].to_a.each do |version_range|
-          sv.affected_versions_string += "[#{version_range}]"
-          sv.publish_date = bran['time']
-        end
-      end
+      handle_branch branch, sv
     end
-
-    mark_affected_versions( sv )
     sv.save
   rescue => e
     self.logger.error e.message
@@ -62,19 +49,42 @@ class PhpSensiolabsCrawler < CommonSecurity
   end
 
 
-  def self.mark_affected_versions sv
-    product = sv.product
-    return nil if product.nil?
-
-    matches = sv.affected_versions_string.scan(/\[(.*?)\]/xi)
-    matches.each do |version_range|
-      versions = VersionService.from_ranges product.versions, version_range.first
+  def self.handle_branch branch, sv
+    product         = sv.product
+    versions_subset = version_subset_for branch, product
+    branch[1]['versions'].to_a.each do |version_range|
+      versions = VersionService.from_ranges versions_subset, version_range
       mark_versions(sv, product, versions)
+      sv.affected_versions_string += "[#{version_range}]"
+      sv.publish_date = branch[1]['time']
     end
+    sv.save
+  rescue => e
+    self.logger.error e.message
+    self.logger.error e.backtrace.join("\n")
   end
 
 
   private
+
+
+    def self.update sv, yml
+      sv.affected_versions_string = ''
+      sv.cve           = yml['cve']
+      sv.summary       = yml['title']
+      sv.summary       = sv.name_id if sv.summary.to_s.empty?
+      sv.links['link'] = yml['link']
+    end
+
+
+    def self.version_subset_for branch, product
+      return [] if product.nil?
+      return product.versions
+      # return product.versions if !branch[0].match(/\A\d/)
+
+      # start = branch[0].gsub(".x", "").gsub(".X", "").gsub("x-dev", "")
+      # VersionService.versions_start_with( product.versions, start )
+    end
 
 
     def self.read_yaml filepath
