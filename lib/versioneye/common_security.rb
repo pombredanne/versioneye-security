@@ -8,9 +8,10 @@ class CommonSecurity
 
     affected_versions.each do |version|
       next if version.to_s.match(/\Adev\-/)
-      next if sv.affected_versions.include?(version.to_s)
 
-      sv.affected_versions.push(version.to_s)
+      if !sv.affected_versions.include?(version.to_s)
+        sv.affected_versions.push(version.to_s)
+      end
 
       product.reload
       product.add_svid version.to_s, sv
