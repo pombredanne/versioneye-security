@@ -5,7 +5,7 @@ class JavaSecurityCrawler < CommonSecurity
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/java_security.log')
+    ActiveSupport::Logger.new('log/common_security.log')
   end
 
 
@@ -61,7 +61,9 @@ class JavaSecurityCrawler < CommonSecurity
     sv.patched_versions_string  = affected['fixedin'].to_a.join(" && ")
     yml["references"].to_a.each do |reference|
       key = reference.gsub(".", ":")
-      sv.links[key] = reference if !sv.links.include?(key)
+      if sv.links && !sv.links.values.include?(reference)
+        sv.links[key] = reference
+      end
     end
   end
 
