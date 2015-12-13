@@ -52,12 +52,11 @@ class PhpSensiolabsCrawler < CommonSecurity
   def self.handle_branch branch, sv
     product         = sv.product
     versions_subset = version_subset_for branch, product
-    branch[1]['versions'].to_a.each do |version_range|
-      versions = VersionService.from_ranges versions_subset, version_range
-      mark_versions(sv, product, versions)
-      sv.affected_versions_string += "[#{version_range}]"
-      sv.publish_date = branch[1]['time']
-    end
+    avs = branch[1]['versions'].to_a.join(",")
+    versions = VersionService.from_ranges versions_subset, avs
+    mark_versions(sv, product, versions)
+    sv.affected_versions_string += "[#{avs}]"
+    sv.publish_date = branch[1]['time']
     sv.save
   rescue => e
     self.logger.error e.message

@@ -1,12 +1,12 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 9c29bb0688505c3f737326a5b2455461debbf02c
-  tag: v8.2.5
+  revision: 358b2455824dde8bdbda35ebda7bad07e4f4b5c6
+  tag: v8.2.6
   specs:
-    versioneye-core (8.2.5)
+    versioneye-core (8.2.6)
       actionmailer (~> 4.2.2)
       aws-sdk (~> 2.2.0)
-      bundler (~> 1.10.6)
+      bundler (~> 1.11.0)
       bunny (~> 2.2.0)
       cocoapods-core (~> 0.39.0)
       dalli (~> 2.7.0)
@@ -208,7 +208,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rufus-scheduler (3.1.9)
+    rufus-scheduler (3.1.10)
     sawyer (0.6.0)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
@@ -219,7 +219,7 @@ GEM
     shoulda-context (1.2.1)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
-    simplecov (0.10.0)
+    simplecov (0.11.1)
       docile (~> 1.1.0)
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
@@ -254,7 +254,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.10.6)
+  bundler (~> 1.11.0)
   capybara (~> 2.5.0)
   database_cleaner (~> 1.5.1)
   factory_girl (~> 4.5.0)
@@ -262,11 +262,11 @@ DEPENDENCIES
   log4r (~> 1.1.0)
   rdoc (~> 4.2.0)
   rspec (~> 3.4.0)
-  rufus-scheduler (= 3.1.9)
+  rufus-scheduler (= 3.1.10)
   shoulda
-  simplecov (~> 0.10.0)
+  simplecov (~> 0.11.1)
   syck (= 1.0.5)
   versioneye-core!
 
 BUNDLED WITH
-   1.10.6
+   1.11.0
