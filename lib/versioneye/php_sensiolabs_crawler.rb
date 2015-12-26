@@ -44,7 +44,7 @@ class PhpSensiolabsCrawler < CommonSecurity
     end
     sv.save
   rescue => e
-    self.logger.error "ERROR for filepath: #{filepath} ->" e.message
+    self.logger.error "ERROR for filepath: #{filepath} -> #{e.message}"
     self.logger.error e.backtrace.join("\n")
   end
 
