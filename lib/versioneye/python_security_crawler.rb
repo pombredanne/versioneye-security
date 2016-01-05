@@ -5,7 +5,7 @@ class PythonSecurityCrawler < CommonSecurity
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/python_security.log')
+    ActiveSupport::Logger.new('log/python_security.log', 10, 2048000)
   end
 
 

@@ -7,7 +7,7 @@ class Worker
   end
 
   def self.log
-    ActiveSupport::Logger.new('log/worker.log')
+    ActiveSupport::Logger.new('log/worker.log', 10, 2048000)
   end
 
   def log

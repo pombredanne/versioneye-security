@@ -5,7 +5,7 @@ class RubySecurityCrawler < CommonSecurity
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/ruby_security.log')
+    ActiveSupport::Logger.new('log/ruby_security.log', 10, 2048000)
   end
 
 

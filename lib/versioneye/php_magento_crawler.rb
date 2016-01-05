@@ -5,7 +5,7 @@ class PhpMagentoCrawler < PhpSensiolabsCrawler
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/php_magento_security.log')
+    ActiveSupport::Logger.new('log/php_magento_security.log', 10, 2048000)
   end
 
 

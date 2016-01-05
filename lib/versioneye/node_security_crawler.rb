@@ -5,7 +5,7 @@ class NodeSecurityCrawler < CommonSecurity
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/node_security.log')
+    ActiveSupport::Logger.new('log/node_security.log', 10, 2048000)
   end
 
 
