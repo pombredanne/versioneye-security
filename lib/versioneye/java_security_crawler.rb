@@ -19,7 +19,7 @@ class JavaSecurityCrawler < CommonSecurity
 
   def self.perform_crawl
     db_dir = '/tmp/victims-cve-db'
-    java_dir = '/tmp/victims-cve-db/database/java/'
+    java_dir = '/tmp/victims-cve-db/database/java'
 
     `(cd /tmp && git clone #{A_GIT_DB})`
     `(cd #{db_dir} && git pull)`
