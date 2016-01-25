@@ -21,6 +21,7 @@ class VersioneyeSecurity
 
   def initialize
     puts "initialize ruby_crawl"
+    init_etcd
     init_logger
     init_mongodb
     init_settings
