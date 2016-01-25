@@ -8,7 +8,7 @@ class Worker
 
   def self.log
     if !defined?(@@log) || @@log.nil?
-      @@log = Versioneye::DynLog.new("log/worker.log", 10).log
+      @@log = Versioneye::DynLog.new("log/security_worker.log", 10).log
     end
     @@log
   end
