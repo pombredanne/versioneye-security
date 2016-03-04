@@ -44,6 +44,7 @@ describe JavaSecurityCrawler do
       product.add_version('2.1.0')
       product.add_version('3.0.0')
       expect( product.save ).to be_truthy
+
       sv = SecurityVulnerability.new
       sv.language = product.language
       sv.prod_key = product.prod_key
@@ -54,6 +55,7 @@ describe JavaSecurityCrawler do
       expect( version.sv_ids ).to be_empty
 
       version = product.version_by_number '1.0.1'
+      expect( version.sv_ids ).to_not be_empty
       expect( version.sv_ids.first ).to eql(sv.ids)
 
       version = product.version_by_number '1.1.1'
