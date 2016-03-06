@@ -17,4 +17,9 @@ class Worker
     Worker.log
   end
 
+  def multi_log msg
+    puts msg
+    log.info msg
+  end
+
 end
