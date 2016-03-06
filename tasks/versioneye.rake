@@ -9,30 +9,30 @@ namespace :versioneye do
     VersioneyeSecurity.new
     scheduler = Rufus::Scheduler.new
 
-    scheduler.every '45m' do
+    scheduler.every '60m' do
       SecurityProducer.new "php_magento"
     end
 
-    scheduler.every '45m' do
+    scheduler.every '60m' do
       SecurityProducer.new "php_sensiolabs"
     end
 
-    scheduler.every '45m' do
+    scheduler.every '60m' do
       SecurityProducer.new "ruby_security"
     end
 
-    scheduler.every '45m' do
+    scheduler.every '60m' do
       SecurityProducer.new "java_security"
     end
 
-    scheduler.every '45m' do
+    scheduler.every '60m' do
       SecurityProducer.new "python_security"
     end
 
     scheduler.join
     while 1 == 1
       p "keep alive rake task"
-      sleep 30
+      sleep 60
     end
   end
 
