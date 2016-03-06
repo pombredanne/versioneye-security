@@ -9,27 +9,23 @@ namespace :versioneye do
     VersioneyeSecurity.new
     scheduler = Rufus::Scheduler.new
 
-    scheduler.every '5m' do
+    scheduler.every '45m' do
       SecurityProducer.new "php_magento"
     end
 
-    scheduler.every '15m' do
+    scheduler.every '45m' do
       SecurityProducer.new "php_sensiolabs"
     end
 
-    scheduler.every '5m' do
-      SecurityProducer.new "node_security"
-    end
-
-    scheduler.every '5m' do
+    scheduler.every '45m' do
       SecurityProducer.new "ruby_security"
     end
 
-    scheduler.every '5m' do
+    scheduler.every '45m' do
       SecurityProducer.new "java_security"
     end
 
-    scheduler.every '5m' do
+    scheduler.every '45m' do
       SecurityProducer.new "python_security"
     end
 
@@ -56,14 +52,6 @@ namespace :versioneye do
     puts "START PhpSensiolabsCrawler"
     VersioneyeSecurity.new
     PhpSensiolabsCrawler.crawl
-    puts "---"
-  end
-
-  desc "Start NodeSecurityCrawler"
-  task :crawl_node_security do
-    puts "START NodeSecurityCrawler"
-    VersioneyeSecurity.new
-    NodeSecurityCrawler.crawl
     puts "---"
   end
 

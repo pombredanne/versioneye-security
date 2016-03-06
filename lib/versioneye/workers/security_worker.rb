@@ -28,9 +28,7 @@ class SecurityWorker < Worker
   def process_work message
     return nil if message.to_s.empty?
 
-    if message.eql?("node_security")
-      NodeSecurityCrawler.crawl
-    elsif message.eql?('php_sensiolabs')
+    if message.eql?('php_sensiolabs')
       PhpSensiolabsCrawler.crawl
     elsif message.eql?('php_magento')
       PhpMagentoCrawler.crawl
