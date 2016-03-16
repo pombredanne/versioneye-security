@@ -112,6 +112,11 @@ describe JavaSecurityCrawler do
 
       worker.exit
 
+      sv = SecurityVulnerability.where(:language => "Java", :prod_key => "commons-beanutils/commons-beanutils" ).first
+      expect( sv.affected_versions.include?('1.9.0') ).to be_truthy
+      expect( sv.affected_versions.include?('1.9.1') ).to be_truthy
+      expect( sv.affected_versions.include?('1.9.2') ).to be_falsey
+
       product = Product.fetch_product Product::A_LANGUAGE_JAVA, 'commons-beanutils/commons-beanutils'
       expect( product.version_by_number('1.9.0').sv_ids ).to_not be_empty
       expect( product.version_by_number('1.9.1').sv_ids ).to_not be_empty
