@@ -98,6 +98,26 @@ describe JavaSecurityCrawler do
       product.version_by_number('5.0.0').sv_ids.should be_empty
     end
 
+    it "succeeds" do
+      product = ProductFactory.create_for_maven 'commons-beanutils', 'commons-beanutils', "1.9.0"
+      product.save.should be_truthy
+      product.versions.push( Version.new( { :version => "1.9.1" } ) )
+      product.versions.push( Version.new( { :version => "1.9.2" } ) )
+      product.save.should be_truthy
+
+      worker = Thread.new{ SecurityWorker.new.work }
+
+      SecurityProducer.new("java_security")
+      sleep 10
+
+      worker.exit
+
+      product = Product.fetch_product Product::A_LANGUAGE_JAVA, 'commons-beanutils/commons-beanutils'
+      expect( product.version_by_number('1.9.0').sv_ids ).to_not be_empty
+      expect( product.version_by_number('1.9.1').sv_ids ).to_not be_empty
+      expect( product.version_by_number('1.9.2').sv_ids ).to be_empty
+    end
+
   end
 
 end
