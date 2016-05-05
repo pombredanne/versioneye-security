@@ -55,9 +55,11 @@ class PhpSensiolabsCrawler < CommonSecurity
   def self.handle_branch branch, sv
     product         = sv.product
     versions_subset = version_subset_for branch, product
+
     avs = branch[1]['versions'].to_a.join(",")
     versions = VersionService.from_ranges versions_subset, avs
     mark_versions(sv, product, versions)
+
     sv.affected_versions_string += "[#{avs}]"
     sv.publish_date = branch[1]['time']
     sv.save

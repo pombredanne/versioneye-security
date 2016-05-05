@@ -2,6 +2,8 @@ class CommonSecurity
 
 
   def self.mark_versions sv, product, affected_versions
+    # TODO use versioneye-core for this.
+    # SecurityService.mark_versions sv, product, affected_versions
     return nil if sv.nil?
     return nil if product.nil?
     return nil if affected_versions.to_a.empty?
