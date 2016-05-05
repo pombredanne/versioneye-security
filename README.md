@@ -2,6 +2,25 @@
 
 This repo contains the security crawlers for [VersionEye](https://www.versioneye.com) written in ruby.
 
+# Config
+
+Make sure that you configured MongoDB correctly in `config/mongoid.yml`.
+Beside that you might need to configure RabbitMQ in `config/settings.json`.
+
+# Rake Tasks
+
+Get a list of all rake tasks:
+
+```
+rake -T
+```
+
+Crawl for Java security vulnerabilities:
+
+```
+rake versioneye:crawl_java_security
+```
+
 ## License
 
 VersionEye-Core is licensed under the MIT license!
