@@ -1,6 +1,6 @@
-# ruby_crawl
+# VersionEye Security
 
-This repo contains the security crawlers written in ruby.
+This repo contains the security crawlers for [VersionEye](https://www.versioneye.com) written in ruby.
 
 ## License
 
