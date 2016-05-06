@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
-gem 'bundler'            , '~> 1.12.0'
-gem 'syck', '1.1.0'
+gem 'bundler' , '~> 1.12.0'
+gem 'syck'    , '1.1.0'
 
 gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v8.19.10'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
