@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:versioneye/versioneye-core.git
+  remote: https://github.com/versioneye/versioneye-core.git
   revision: 9e0881fe5cc1e21f7ffca71de56eac517d077ba7
   tag: v8.19.10
   specs:
