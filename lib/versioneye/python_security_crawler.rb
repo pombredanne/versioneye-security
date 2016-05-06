@@ -69,22 +69,43 @@ class PythonSecurityCrawler < CommonSecurity
     product = sv.product
     return nil if product.nil?
 
+    major_ranges = {}
     affected_versions = []
     affected.each do |version_expr|
       if version_expr.match(/,/)
-        sps    = version_expr.split(",")
-        condi  = sps[0]
-        start  = sps[1]
-        start  = "#{start}." if start.match(/-\z/).nil?
-        subset = VersionService.versions_start_with( product.versions, start )
-        affected_versions += VersionService.from_ranges( subset, condi )
-        next
+        sps        = version_expr.split(",")
+        constraint = sps[0]
+        start      = sps[1]
+        start      = "#{start}." if start.match(/-\z/).nil?
+        subset_versions = VersionService.versions_start_with( product.versions, start )
+        subset = VersionService.from_ranges( subset_versions, constraint )
+        if major_ranges[start].nil?
+          major_ranges[start] = subset
+        else
+          new_val = intersection( major_ranges[start], subset )
+          major_ranges[start] = new_val
+        end
+      else
+        affected_versions += VersionService.from_ranges( product.versions, version_expr )
       end
-      affected_versions += VersionService.from_ranges( product.versions, version_expr )
+    end
+
+    major_ranges.values.each do |val|
+      affected_versions += val
     end
 
     mark_versions( sv, product, affected_versions )
   end
 
+
+  def self.intersection range1, range2
+    common = []
+    range1.each do |val1|
+      range2.each do |val2|
+        common << val2 if val1.to_s.eql?(val2.to_s)
+      end
+    end
+    common
+  end
 
 end
