@@ -1,3 +1,5 @@
+[![Circle CI](https://circleci.com/gh/versioneye/versioneye-security.svg?style=svg)](https://circleci.com/gh/versioneye/versioneye-security)
+
 # VersionEye Security
 
 This repo contains the security crawlers for [VersionEye](https://www.versioneye.com) written in ruby.
