@@ -4,10 +4,44 @@
 
 This repo contains the security crawlers for [VersionEye](https://www.versioneye.com) written in ruby.
 
-# Config
+## Start the backend services for VersionEye
 
-Make sure that you configured MongoDB correctly in `config/mongoid.yml`.
-Beside that you might need to configure RabbitMQ in `config/settings.json`.
+This project contains a [docker-compose.yml](docker-compose.yml) file which describes the backend systems
+of VersionEye. You can start the backend systems like this:
+
+```
+docker-compose up -d
+```
+
+That will start:
+
+ - MongoDB
+ - RabbitMQ
+ - ElasticSearch
+ - Memcached
+
+For persistence you should comment in and adjust the mount volumes in [docker-compose.yml](docker-compose.yml)
+for MongoDB and ElasticSearch. If you are not interested in persisting the data on your host you can
+let it untouched.
+
+Shutting down the backend systems works like this:
+
+```
+docker-compose down
+```
+
+## Configuration
+
+All important configuration values are read from environment variable. Before you start
+VersioneyeCore.new you should adjust the values in [scripts/set_vars_for_dev.sh](scripts/set_vars_for_dev.sh)
+and load them like this:
+
+```
+source ./scripts/set_vars_for_dev.sh
+```
+
+The most important env. variables are the ones for the backend systems, which point to MongoDB, ElasticSearch,
+RabbitMQ and Memcached.
 
 # Rake Tasks
 
