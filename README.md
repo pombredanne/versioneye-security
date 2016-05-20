@@ -57,6 +57,23 @@ Crawl for Java security vulnerabilities:
 rake versioneye:crawl_java_security
 ```
 
+## Tests
+
+The tests for this project are running after each `git push` on CircleCI!
+First of all a Docker image is build for this project and the tests are executed inside of a Docker container.
+For more details take a look to the [Dockerfile](Dockerfile) and the [circle.yml](circle.yml) file in the root directory!
+
+If the Docker containers for the backend systems are running locally, the tests can be executed locally
+with this command:
+
+```
+./scripts/run_tests_local.sh
+```
+
+Make sure that you followed the steps in the configuration section, before you run the tests!
+
+All Files covered to 95.23%.
+
 ## License
 
 VersionEye-Core is licensed under the MIT license!
