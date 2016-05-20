@@ -66,7 +66,7 @@ rake versioneye:crawl_java_security
 
 ## Tests
 
-The tests for this project are running after each `git push` on CircleCI!
+The tests for this project are running after each `git push` on [CircleCI](https://circleci.com/gh/versioneye/versioneye-security)!
 First of all a Docker image is build for this project and the tests are executed inside of a Docker container.
 For more details take a look to the [Dockerfile](Dockerfile) and the [circle.yml](circle.yml) file in the root directory!
 
