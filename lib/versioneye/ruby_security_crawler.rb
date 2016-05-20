@@ -64,12 +64,13 @@ class RubySecurityCrawler < CommonSecurity
     product = sv.product
     return nil if product.nil?
 
-    unaffected_1 = VersionService.from_or_ranges product.versions, sv.unaffected_versions_string
-    unaffected_2 = VersionService.from_or_ranges product.versions, sv.patched_versions_string
+    unaffected = VersionService.from_or_ranges product.versions, sv.unaffected_versions_string
+    patched    = VersionService.from_or_ranges product.versions, sv.patched_versions_string
 
     affected_versions = []
     product.versions.each do |version|
-      next if unaffected_1.to_a.include?(version) || unaffected_2.to_a.include?(version)
+      next if unaffected.to_a.map(&:to_s).include?(version.to_s)
+      next if patched.to_a.map(&:to_s).include?(version.to_s)
       affected_versions << version
     end
 
