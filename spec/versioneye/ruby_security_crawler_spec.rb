@@ -42,7 +42,6 @@ describe RubySecurityCrawler do
 
       expect( SecurityVulnerability.where(:name_id => 'CVE-2016-2098').count ).to eq(1)
       sv = SecurityVulnerability.where(:name_id => 'CVE-2016-2098').first
-      p "sv.ids: #{sv.ids}"
       expect( sv ).to_not be_nil
 
       product = Product.fetch_product Product::A_LANGUAGE_RUBY, 'actionpack'
