@@ -67,7 +67,7 @@ class JavaSecurityCrawler < CommonSecurity
       key = reference.gsub(".", ":")
       match = reference.match(/\/(CVE.*)\z/i)
       if match
-        key = match[0].gsub(".html", "")
+        key = match[0].gsub(".", "_")
       end
       if sv.links && !sv.links.values.include?(reference)
         sv.links[key] = reference
