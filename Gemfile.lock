@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/versioneye/versioneye-core.git
-  revision: b380e5e65873d58b343ee22c966ab0a9ca03f1ca
-  tag: v8.21.2
+  revision: 312cd85202a84ed699cdfeadb34f288497cc8cc0
+  tag: v8.23.2
   specs:
-    versioneye-core (8.21.2)
+    versioneye-core (8.23.2)
       actionmailer (~> 4.2.6)
       aws-sdk (~> 2.3.0)
       bundler (~> 1.12.5)
-      bunny (~> 2.3.0)
+      bunny (~> 2.4.0)
       cocoapods-core (~> 0.39.0)
       dalli (~> 2.7.0)
       etcd (~> 0.3.0)
@@ -73,7 +73,7 @@ GEM
       aws-sdk-core (= 2.3.13)
     bson (4.1.1)
     builder (3.2.2)
-    bunny (2.3.1)
+    bunny (2.4.0)
       amq-protocol (>= 2.0.1)
     capybara (2.7.1)
       addressable
@@ -191,7 +191,7 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    rake (11.1.2)
+    rake (11.2.2)
     rdoc (4.2.2)
       json (~> 1.4)
     rest-client (1.8.0)
