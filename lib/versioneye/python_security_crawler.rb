@@ -60,7 +60,7 @@ class PythonSecurityCrawler < CommonSecurity
     sv.affected_versions_string = affected['version'].to_a.join(" && ")
     sv.patched_versions_string  = affected['fixedin'].to_a.join(" && ")
     yml["references"].to_a.each do |reference|
-      key = reference.gsub(".", ":")
+      key = reference.gsub(".", "::")
       match = reference.match(/(CVE.*)\z/i)
       if match
         key = match[0].gsub(/(\?.*)\z/, "").gsub(".", "_")
