@@ -28,7 +28,7 @@ class PhpMagentoCrawler < PhpSensiolabsCrawler
     all_yaml_files( db_dir ) do |filepath|
       i += 1
       logger.info "##{i} parse yaml: #{filepath}"
-      parse_yaml filepath
+      parse_yaml filepath, 'magento-security-advisories'
     end
   end
 

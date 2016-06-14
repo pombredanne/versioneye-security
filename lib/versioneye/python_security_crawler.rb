@@ -52,6 +52,7 @@ class PythonSecurityCrawler < CommonSecurity
 
 
   def self.update sv, yml, affected
+    sv.source      = 'victims-cve-db'
     sv.description = yml['description']
     sv.summary     = yml['title']
     sv.cve         = yml['cve']

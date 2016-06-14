@@ -40,6 +40,7 @@ class RubySecurityCrawler < CommonSecurity
     name_id  = filepath.split("/").last.gsub(".yaml", "").gsub(".yml", "")
 
     sv              = fetch_sv Product::A_LANGUAGE_RUBY, prod_key, name_id
+    sv.source       = 'ruby-advisory-db'
     sv.summary      = yml['title']
     sv.description  = yml['description']
     sv.framework    = yml['framework']

@@ -55,6 +55,7 @@ class JavaSecurityCrawler < CommonSecurity
 
 
   def self.update sv, yml, affected
+    sv.source      = 'victims-cve-db'
     sv.description = yml['description']
     sv.summary     = yml['title']
     sv.summary     = sv.name_id if sv.summary.to_s.empty?
