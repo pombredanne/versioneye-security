@@ -78,7 +78,9 @@ class PhpSensiolabsCrawler < CommonSecurity
       sv.cve           = yml['cve']
       sv.summary       = yml['title']
       sv.summary       = sv.name_id if sv.summary.to_s.empty?
-      sv.links['link'] = yml['link']
+      if !sv.links.values.include?( yml['link'] )
+        sv.links['link'] = yml['link']
+      end
     end
 
 

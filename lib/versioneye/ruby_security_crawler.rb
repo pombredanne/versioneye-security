@@ -49,7 +49,9 @@ class RubySecurityCrawler < CommonSecurity
     sv.cvss_v2      = yml['cvss_v2']
     sv.osvdb        = yml['osvdb']
     sv.publish_date = yml['date']
-    sv.links['URL'] = yml['url']
+    if !sv.links.values.include?( yml['url'] )
+      sv.links['URL'] = yml['url']
+    end
     sv.unaffected_versions_string = yml['unaffected_versions'].to_a.join('||')
     sv.patched_versions_string    = yml['patched_versions'].to_a.join('||')
 
