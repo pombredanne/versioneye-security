@@ -50,6 +50,22 @@ source ./scripts/set_vars_for_dev.sh
 The most important env. variables are the ones for the backend systems, which point to MongoDB, ElasticSearch,
 RabbitMQ and Memcached.
 
+## Install dependencies
+
+If the backend services are all up and running and the environment variables are set correctly
+you can install the dependencies with `bundler`. If `bundler` is not installed on your machine
+run this command to install it:
+
+```
+gem install bundler
+```
+
+Then you can install the dependencies like this:
+
+```
+bundle install
+```
+
 # Rake Tasks
 
 Get a list of all rake tasks:
@@ -63,6 +79,10 @@ Crawl for Java security vulnerabilities:
 ```
 rake versioneye:crawl_java_security
 ```
+
+## Support
+
+For commercial support send a message to `support@versioneye.com`.
 
 ## Tests
 

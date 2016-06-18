@@ -52,6 +52,7 @@ class PythonSecurityCrawler < CommonSecurity
 
 
   def self.update sv, yml, affected
+    sv.source      = 'victims-cve-db'
     sv.description = yml['description']
     sv.summary     = yml['title']
     sv.cve         = yml['cve']
@@ -59,8 +60,14 @@ class PythonSecurityCrawler < CommonSecurity
     sv.affected_versions_string = affected['version'].to_a.join(" && ")
     sv.patched_versions_string  = affected['fixedin'].to_a.join(" && ")
     yml["references"].to_a.each do |reference|
-      key = reference.gsub(".", ":")
-      sv.links[key] = reference if !sv.links.include?(key)
+      key = reference.gsub(".", "::")
+      match = reference.match(/(CVE-.*)\z/i)
+      if match
+        key = match[0].gsub(/(\?.*)\z/, "").gsub(".", "_")
+      end
+      if sv.links && !sv.links.values.include?(reference)
+        sv.links[key] = reference
+      end
     end
   end
 

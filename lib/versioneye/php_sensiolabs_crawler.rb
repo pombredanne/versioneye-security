@@ -34,14 +34,14 @@ class PhpSensiolabsCrawler < CommonSecurity
   end
 
 
-  def self.parse_yaml filepath
+  def self.parse_yaml filepath, source = 'sensiolabs-security-advisories'
     yml       = read_yaml filepath
     name_id   = filepath.split("/").last.gsub(".yaml", "").gsub(".yml", "")
     reference = yml['reference'].to_s
     prod_key  = reference.gsub("composer://", "").downcase
 
     sv = fetch_sv Product::A_LANGUAGE_PHP, prod_key, name_id
-    update( sv, yml )
+    update( sv, yml, source )
     yml['branches'].each do |branch|
       handle_branch branch, sv
     end
@@ -72,12 +72,15 @@ class PhpSensiolabsCrawler < CommonSecurity
   private
 
 
-    def self.update sv, yml
+    def self.update sv, yml, source_db
+      sv.source = source_db
       sv.affected_versions_string = ''
       sv.cve           = yml['cve']
       sv.summary       = yml['title']
       sv.summary       = sv.name_id if sv.summary.to_s.empty?
-      sv.links['link'] = yml['link']
+      if !sv.links.values.include?( yml['link'] )
+        sv.links['link'] = yml['link']
+      end
     end
 
 
